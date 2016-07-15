@@ -1,1 +1,1 @@
-# bwlabel_for_opencv_in_c
+# bwlabel for opencv in c
