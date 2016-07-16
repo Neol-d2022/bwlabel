@@ -35,11 +35,31 @@ unsigned int** extractUintArr(IplImage *img, unsigned int channel) {
 	return ret;
 }
 
-void freeUintArr(unsigned char **arr, CvSize size) {
+void freeUintArr(unsigned int **arr, int height) {
 	int i;
 	
-	for(i = 0; i < size.height; i += 1) {
+	for(i = 0; i < height; i += 1) {
 		free(arr[i]);
 	}
 	free(arr);
+}
+
+unsigned int** copyUintArr(const unsigned int **srcArr, int height, int width) {
+	unsigned int **ret;
+	int i, j, k;
+	
+	ret = (unsigned int **)malloc(height * sizeof(*ret));
+	if(!ret) return 0;
+	
+	for(i = 0; i < height; i += 1) {
+		ret[i] = (unsigned int *)malloc(width * sizeof(**ret));
+		if(!ret) {
+			for(k = 0; k < i; k += 1) free(ret[k]);
+			free(ret);
+			return 0;
+		}
+		for(j = 0; j < width; j += 1) ret[i][j] = srcArr[i][j];
+	}
+	
+	return ret;
 }
